@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  username String   @unique
+  password String
+  email    String?
+  role     String   @default("user")
+  name     String?
+  
+  @@map("users")
+}
+
+model Drone {
+  id             Int       @id @default(autoincrement())
+  name           String
+  model          String
+  status         String
+  batteryLevel   Int
+  lastMission    DateTime?
+  locationLat    String?
+  locationLng    String?
+  maintenanceLog Json?
+  missions       Mission[]
+  
+  @@map("drones")
+}
+
+model Location {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  latitude    String
+  longitude   String
+  area        Float?
+  type        String?
+  missions    Mission[]
+  
+  @@map("locations")
+}
+
+model Mission {
+  id                    Int            @id @default(autoincrement())
+  name                  String
+  description           String?
+  locationId            Int
+  location              Location       @relation(fields: [locationId], references: [id])
+  droneId               Int?
+  drone                 Drone?         @relation(fields: [droneId], references: [id])
+  status                String
+  missionType           String
+  completionPercentage  Int?
+  isRecurring           Boolean        @default(false)
+  recurringPattern      String?
+  recurringDays         Int[]
+  scheduledTime         DateTime?
+  startTime             DateTime?
+  endTime               DateTime?
+  surveyPatternData     Json?
+  surveyParameters      Json?
+  surveyReports         SurveyReport[]
+  
+  @@map("missions")
+}
+
+model SurveyReport {
+  id           Int      @id @default(autoincrement())
+  missionId    Int
+  mission      Mission  @relation(fields: [missionId], references: [id])
+  date         DateTime
+  duration     Int
+  areaCovered  String
+  status       String
+  summary      String?
+  findings     Json?
+  imageUrls    String[]
+  
+  @@map("survey_reports")
+}

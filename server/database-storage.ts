@@ -25,8 +25,14 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(user: InsertUser): Promise<User> {
+    // Make sure we have an email for Prisma
+    const userData = {
+      ...user,
+      email: user.email || `${user.username}@example.com` // Default email if not provided
+    };
+    
     return await prisma.user.create({
-      data: user
+      data: userData
     });
   }
 

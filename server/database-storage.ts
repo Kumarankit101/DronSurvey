@@ -25,10 +25,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(user: InsertUser): Promise<User> {
-    // Make sure we have an email for Prisma
+    // Make sure we have an email and handle nullable fields for Prisma
     const userData = {
       ...user,
-      email: user.email || `${user.username}@example.com` // Default email if not provided
+      email: user.email || `${user.username}@example.com`, // Default email if not provided
+      name: user.name || null
     };
     
     return await prisma.user.create({
@@ -49,16 +50,45 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createDrone(drone: InsertDrone): Promise<Drone> {
+    // Make sure required fields are present
+    const droneData = {
+      ...drone,
+      // Handle nullable fields with proper default values
+      lastMission: drone.lastMission || null,
+      locationLat: drone.locationLat || null,
+      locationLng: drone.locationLng || null
+    };
+    
     return await prisma.drone.create({
-      data: drone
+      data: droneData
     });
   }
 
   async updateDrone(id: number, drone: Partial<Drone>): Promise<Drone | undefined> {
     try {
+      // Get the existing drone first to handle required fields
+      const currentDrone = await this.getDrone(id);
+      if (!currentDrone) return undefined;
+      
+      // Create update data, preserving required fields if not provided in update
+      const updateData: any = { ...drone };
+      
+      // Make sure null values are properly handled for nullable fields
+      if ('lastMission' in drone && drone.lastMission === undefined) {
+        updateData.lastMission = currentDrone.lastMission;
+      }
+      
+      if ('locationLat' in drone && drone.locationLat === undefined) {
+        updateData.locationLat = currentDrone.locationLat;
+      }
+      
+      if ('locationLng' in drone && drone.locationLng === undefined) {
+        updateData.locationLng = currentDrone.locationLng;
+      }
+      
       return await prisma.drone.update({
         where: { id },
-        data: drone
+        data: updateData
       });
     } catch (error) {
       console.error("Failed to update drone:", error);
@@ -127,9 +157,29 @@ export class DatabaseStorage implements IStorage {
 
   async updateMission(id: number, mission: Partial<Mission>): Promise<Mission | undefined> {
     try {
+      // Get the existing mission first to handle required fields
+      const currentMission = await this.getMission(id);
+      if (!currentMission) return undefined;
+      
+      // Create update data, preserving required fields if not provided in update
+      const updateData: any = { ...mission };
+      
+      // Make sure we don't override required fields with undefined
+      if ('surveyPatternData' in mission && mission.surveyPatternData === undefined) {
+        updateData.surveyPatternData = currentMission.surveyPatternData;
+      }
+      
+      if ('surveyParameters' in mission && mission.surveyParameters === undefined) {
+        updateData.surveyParameters = currentMission.surveyParameters;
+      }
+      
+      if ('recurringDays' in mission && mission.recurringDays === undefined) {
+        updateData.recurringDays = currentMission.recurringDays;
+      }
+      
       return await prisma.mission.update({
         where: { id },
-        data: mission
+        data: updateData
       });
     } catch (error) {
       console.error("Failed to update mission:", error);
@@ -162,8 +212,16 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createSurveyReport(report: InsertSurveyReport): Promise<SurveyReport> {
+    // Make sure required fields are present
+    const reportData = {
+      ...report,
+      // Required fields in Prisma schema that might be optional in Zod schema
+      findings: report.findings || {},
+      imageUrls: report.imageUrls || []
+    };
+    
     return await prisma.surveyReport.create({
-      data: report
+      data: reportData
     });
   }
 

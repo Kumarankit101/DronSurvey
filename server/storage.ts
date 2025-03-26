@@ -1,9 +1,9 @@
 import { 
-  User, InsertUser, users, 
-  Drone, InsertDrone, drones,
-  Location, InsertLocation, locations,
-  Mission, InsertMission, missions,
-  SurveyReport, InsertSurveyReport, surveyReports
+  User, InsertUser,
+  Drone, InsertDrone,
+  Location, InsertLocation,
+  Mission, InsertMission,
+  SurveyReport, InsertSurveyReport
 } from "@shared/schema";
 
 // Interface for all storage operations

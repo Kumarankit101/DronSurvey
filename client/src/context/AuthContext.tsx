@@ -29,6 +29,11 @@ interface RegisterData {
   name?: string;
 }
 
+// Auth response type
+interface AuthResponse {
+  user: User;
+}
+
 // Create the context with a default value
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -53,13 +58,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await apiRequest<{ user: User }>({
+        const data = await apiRequest<AuthResponse>({
           url: '/api/auth/me',
           method: 'GET'
         });
         
-        if (response) {
-          setUser(response.user);
+        if (data && data.user) {
+          setUser(data.user);
         }
       } catch (error) {
         // User is not authenticated - this is expected for new users
@@ -78,17 +83,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await apiRequest<{ user: User }>({
+      const data = await apiRequest<AuthResponse>({
         url: '/api/auth/login',
         method: 'POST',
         data: { username, password }
       });
       
-      if (response) {
-        setUser(response.user);
+      if (data && data.user) {
+        setUser(data.user);
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.error || 'Login failed';
+      const errorMessage = error.message || 'Login failed';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -102,17 +107,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await apiRequest<{ user: User }>({
+      const data = await apiRequest<AuthResponse>({
         url: '/api/auth/register',
         method: 'POST',
         data: userData
       });
       
-      if (response) {
-        setUser(response.user);
+      if (data && data.user) {
+        setUser(data.user);
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.error || 'Registration failed';
+      const errorMessage = error.message || 'Registration failed';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -132,7 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       setUser(null);
     } catch (error: any) {
-      const errorMessage = error.response?.data?.error || 'Logout failed';
+      const errorMessage = error.message || 'Logout failed';
       setError(errorMessage);
     } finally {
       setIsLoading(false);

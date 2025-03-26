@@ -1,12 +1,22 @@
 import express, { type Request, Response, NextFunction } from "express";
+import cookieParser from "cookie-parser";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { storage } from "./storage";
 import { DatabaseStorage } from "./database-storage";
+import { authenticateJWT } from "./middleware/auth";
+import authRoutes from "./routes/auth";
 
 const app = express();
+// Cookie parser middleware
+app.use(cookieParser());
+// Authentication middleware - will attach user to req if authenticated
+app.use(authenticateJWT);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Register auth routes
+app.use('/api/auth', authRoutes);
 
 app.use((req, res, next) => {
   const start = Date.now();

@@ -79,8 +79,16 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createLocation(location: InsertLocation): Promise<Location> {
+    // Make sure required fields are present
+    const locationData = {
+      ...location,
+      // Required fields in Prisma schema that might be optional in Zod schema
+      latitude: location.latitude || "0",
+      longitude: location.longitude || "0"
+    };
+    
     return await prisma.location.create({
-      data: location
+      data: locationData
     });
   }
 
@@ -103,8 +111,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createMission(mission: InsertMission): Promise<Mission> {
+    // Make sure required fields are present
+    const missionData = {
+      ...mission,
+      // Required fields in Prisma schema that might be optional in Zod schema
+      recurringDays: mission.recurringDays || [],
+      surveyPatternData: mission.surveyPatternData || {},
+      surveyParameters: mission.surveyParameters || {}
+    };
+    
     return await prisma.mission.create({
-      data: mission
+      data: missionData
     });
   }
 

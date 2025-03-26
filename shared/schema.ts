@@ -7,14 +7,13 @@ export const userSchema = z.object({
   password: z.string(),
   email: z.string(),
   role: z.string(),
-  name: z.string().nullable().optional(),
+  name: z.string().nullable(),
 });
 
 export const insertUserSchema = userSchema.omit({ 
   id: true 
 }).partial({
   name: true,
-  email: true,
 });
 
 // Drone schema using Zod
@@ -43,8 +42,8 @@ export const locationSchema = z.object({
   name: z.string(),
   description: z.string().nullable(),
   type: z.string(),
-  latitude: z.string().nullable(),
-  longitude: z.string().nullable(),
+  latitude: z.string(),
+  longitude: z.string(),
   area: z.number().nullable(),
 });
 
@@ -52,8 +51,6 @@ export const insertLocationSchema = locationSchema.omit({
   id: true,
 }).partial({
   description: true,
-  latitude: true,
-  longitude: true,
   area: true,
 });
 
@@ -62,58 +59,52 @@ export const missionSchema = z.object({
   id: z.number(),
   name: z.string(),
   description: z.string().nullable(),
-  locationId: z.number().nullable(),
+  locationId: z.number(),
   droneId: z.number().nullable(),
   status: z.string(), // scheduled, in-progress, completed, aborted
   missionType: z.string(), // perimeter, crosshatch, grid
-  startTime: z.date().nullable(),
-  endTime: z.date().nullable(),
-  scheduledTime: z.date().nullable(),
+  completionPercentage: z.number(),
   isRecurring: z.boolean().default(false),
   recurringPattern: z.string().nullable(), // daily, weekly, monthly
-  recurringDays: z.array(z.number()).nullable(), // [1,3,5] for Monday, Wednesday, Friday
-  surveyParameters: z.record(z.any()).nullable(), // altitude, overlap, etc
-  surveyPatternData: z.record(z.any()).nullable(), // coordinates, waypoints
-  completionPercentage: z.number().nullable(),
+  recurringDays: z.array(z.number()),
+  scheduledTime: z.date().nullable(),
+  startTime: z.date().nullable(),
+  endTime: z.date().nullable(),
+  surveyPatternData: z.any(),
+  surveyParameters: z.any(),
 });
 
 export const insertMissionSchema = missionSchema.omit({
   id: true,
 }).partial({
   description: true,
-  locationId: true,
   droneId: true,
   startTime: true,
   endTime: true,
   scheduledTime: true,
   isRecurring: true,
   recurringPattern: true,
-  recurringDays: true,
-  surveyParameters: true,
-  surveyPatternData: true,
-  completionPercentage: true,
 });
 
 // Survey report schema using Zod
 export const surveyReportSchema = z.object({
   id: z.number(),
   missionId: z.number(),
-  date: z.string(),
-  duration: z.number(),
+  date: z.date(),
+  duration: z.number().nullable(),
   areaCovered: z.string().nullable(),
-  findings: z.record(z.any()).nullable(),
   status: z.string(), // completed, partial, failed
   summary: z.string().nullable(),
-  imageUrls: z.array(z.string()).optional(),
+  findings: z.any(),
+  imageUrls: z.array(z.string()),
 });
 
 export const insertSurveyReportSchema = surveyReportSchema.omit({
   id: true,
-  imageUrls: true,
 }).partial({
   areaCovered: true,
-  findings: true,
-  summary: true,
+  summary: true, 
+  duration: true,
 });
 
 // Types for the database models

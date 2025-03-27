@@ -1,0 +1,57 @@
+import express, { type Request, Response, NextFunction } from "express";
+import cookieParser from "cookie-parser";
+import { registerRoutes } from "./routes.ts";
+import { storage } from "./storage.ts";
+import { DatabaseStorage } from "./database-storage.js";
+import { authenticateJWT } from "./middleware/auth.js";
+import authRoutes from "./routes/auth.js";
+import dotenv from "dotenv";
+import { createServer } from "http";
+
+dotenv.config();
+const app = express();
+// Cookie parser middleware
+app.use(cookieParser());
+// Authentication middleware - will attach user to req if authenticated
+app.use(authenticateJWT);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// Register auth routes
+app.use('/api/auth', authRoutes);
+// app.use("/", (req, res) => {
+//   res.send("Hello World!");
+// });
+
+(async () => {
+  // Seed initial data if we're using a database
+  if (storage instanceof DatabaseStorage) {
+    try {
+      await (storage as DatabaseStorage).seedInitialData();
+      console.log("Database seeded successfully");
+    } catch (error) {
+      console.log(`Error seeding database: ${error}`);
+    }
+  }
+
+  const server = createServer(app);
+  await registerRoutes(app);
+
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+
+    res.status(status).json({ message });
+    throw err;
+  });
+
+  console.log("Registering routes...");
+  // ALWAYS serve the app on port 3000
+  const port = 3000;
+  server.listen({
+    port,
+    host: "127.0.0.1",
+  }, () => {
+    console.log(`API server running on port ${port}`);
+  });
+})();

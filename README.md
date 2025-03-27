@@ -169,13 +169,13 @@ Detailed API documentation is available in the Backend README.
 
 To enhance productivity and efficiency, the following AI-assisted tools were used during the development process:
 
-Replit: Used for initial project development, providing a cloud-based coding environment with real-time collaboration.
+- Replit: Used for initial project development, providing a cloud-based coding environment with real-time collaboration.
 
-Trae Code Editor: Utilized for further development and refining of code with an optimized developer experience.
+- Trae Code Editor: Utilized for further development and refining of code with an optimized developer experience.
 
-Augment: Assisted in code generation, debugging, and workflow automation, streamlining development processes.
+- Augment: Assisted in code generation, debugging, and workflow automation, streamlining development processes.
 
-ChatGPT: Used extensively for documentation, generating system design artifacts, flowcharts, and architectural diagrams.
+- ChatGPT: Used extensively for documentation, generating system design artifacts, flowcharts, and architectural diagrams.
 
 These AI tools helped expedite the development cycle by automating repetitive tasks, improving code quality, and enhancing documentation efficiency.
 

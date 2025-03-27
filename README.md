@@ -167,3 +167,22 @@ Detailed API documentation is available in the Backend README.
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+
+
+#AI Tools and Impact on Workflow
+
+To enhance productivity and efficiency, the following AI-assisted tools were used during the development process:
+
+Replit: Used for initial project development, providing a cloud-based coding environment with real-time collaboration.
+
+Trae Code Editor: Utilized for further development and refining of code with an optimized developer experience.
+
+Augment: Assisted in code generation, debugging, and workflow automation, streamlining development processes.
+
+ChatGPT: Used extensively for documentation, generating system design artifacts, flowcharts, and architectural diagrams.
+
+These AI tools helped expedite the development cycle by automating repetitive tasks, improving code quality, and enhancing documentation efficiency.
+
+This document provides an overview of the system architecture, workflows, and AI-assisted enhancements to ensure a well-structured and scalable drone survey management system.

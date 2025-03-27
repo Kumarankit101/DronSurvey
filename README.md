@@ -164,14 +164,8 @@ Detailed API documentation is available in the Backend README.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-
-
-
-#AI Tools and Impact on Workflow
+## AI Tools and Impact on Workflow
 
 To enhance productivity and efficiency, the following AI-assisted tools were used during the development process:
 
@@ -186,3 +180,13 @@ ChatGPT: Used extensively for documentation, generating system design artifacts,
 These AI tools helped expedite the development cycle by automating repetitive tasks, improving code quality, and enhancing documentation efficiency.
 
 This document provides an overview of the system architecture, workflows, and AI-assisted enhancements to ensure a well-structured and scalable drone survey management system.
+
+
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+
+

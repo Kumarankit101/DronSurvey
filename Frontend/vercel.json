@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+      {
+        "source": "/api/(.*)",
+        "destination": "https://dronsurvey-production.up.railway.app/api/$1"
+      }
+    ]
+  }

@@ -11,6 +11,10 @@ export default defineConfig({
       '@shared': path.resolve(__dirname, './shared')
     }
   },
+  build: {
+    outDir: '../dist',
+    emptyOutDir: true
+  },
   server: {
     port: 5138,
     proxy: {

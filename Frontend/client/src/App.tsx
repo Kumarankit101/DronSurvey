@@ -13,6 +13,7 @@ import FacilityManagement from "@/pages/FacilityManagement";
 import Home from "@/pages/Home";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 
+console.log("REACT_APP_API_URL");
 // Protected routes for authenticated users
 function AuthenticatedRoutes() {
   return (

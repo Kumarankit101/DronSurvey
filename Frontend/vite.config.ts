@@ -4,7 +4,10 @@ import path from 'path'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  
+
+  // Print the backend URL to the console
+  console.log(`Backend URL: ${env.VITE_API_URL}`);
+
   return {
     root: './client',
     plugins: [react()],
@@ -22,7 +25,7 @@ export default defineConfig(({ mode }) => {
       port: 5138,
       proxy: {
         '/api': {
-          target: env.VITE_API_URL || 'http://localhost:3000',
+          target: env.VITE_API_URL,
           changeOrigin: true,
           secure: false
         }

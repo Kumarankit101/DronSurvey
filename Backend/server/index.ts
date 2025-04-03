@@ -54,7 +54,7 @@ app.use('/api/auth', authRoutes);
   const port = 3000;
   server.listen({
     port,
-    host: "127.0.0.1",
+    host: "0.0.0.0",
   }, () => {
     console.log(`API server running on port ${port}`);
   });

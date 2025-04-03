@@ -7,9 +7,13 @@ import { authenticateJWT } from "./middleware/auth.js";
 import authRoutes from "./routes/auth.js";
 import dotenv from "dotenv";
 import { createServer } from "http";
+import cors from "cors"; // Import the cors package
+
 
 dotenv.config();
 const app = express();
+app.use(cors());
+
 // Cookie parser middleware
 app.use(cookieParser());
 // Authentication middleware - will attach user to req if authenticated

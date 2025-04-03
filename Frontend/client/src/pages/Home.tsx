@@ -172,6 +172,14 @@ export default function Home() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
+                  {/* Display login credentials */}
+                  <Alert variant="default" className="mb-4">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>
+                      Use credentials: <strong>admin1</strong> /{" "}
+                      <strong>admin1</strong>
+                    </AlertDescription>
+                  </Alert>
                   {(formError || error) && (
                     <Alert variant="destructive" className="mb-4">
                       <AlertCircle className="h-4 w-4" />

@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "tsx server/index.ts",
-    "dev": "tsx watch server/index.ts"
+    "dev": "tsx watch server/index.ts",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",

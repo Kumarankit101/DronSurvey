@@ -13,7 +13,7 @@ import FacilityManagement from "@/pages/FacilityManagement";
 import Home from "@/pages/Home";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 
-console.log("REACT_APP_API_URL");
+// console.log("REACT_APP_API_URL");
 // Protected routes for authenticated users
 function AuthenticatedRoutes() {
   return (
@@ -31,12 +31,12 @@ function AuthenticatedRoutes() {
   );
 }
 
-// Main router component that decides what to render based on auth state
+//  router component that decides what to render based on auth state
 function MainRouter() {
   const { isAuthenticated, isLoading } = useAuth();
   const [location] = useLocation();
 
-  // Show loading indicator while checking auth
+  //  loading indicator while checking auth
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -45,12 +45,10 @@ function MainRouter() {
     );
   }
 
-  // Show authentication page for non-logged in users
   if (!isAuthenticated) {
     return <Home />;
   }
 
-  // Show authenticated routes for logged in users
   return <AuthenticatedRoutes />;
 }
 

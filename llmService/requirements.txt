@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+sse-starlette
+python-dotenv
+openai  # If you're using OpenAI
+google-generativeai
+PyJWT
+asyncpg

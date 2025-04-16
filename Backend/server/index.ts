@@ -1,8 +1,13 @@
 import express, { type Request, Response, NextFunction } from "express";
 import cookieParser from "cookie-parser";
-import { registerRoutes } from "./routes.ts";
-import { storage } from "./storage.ts";
-import { DatabaseStorage } from "./database-storage.js";
+// import { registerRoutes } from "./routes.ts";
+import { dashboardRoutes } from "./routes/dashboardRoute.ts";
+import { locationRoutes } from "./routes/locationRoute.ts";
+import { missionRoutes } from "./routes/missionRoute.ts";
+import { surveyRoutes } from "./routes/surveyRoute.ts";
+import { droneRoutes } from "./routes/droneRoute.ts";
+import { storage } from "./database/storage.ts";
+import { DatabaseStorage } from "./database/database-storage.js";
 import { authenticateJWT } from "./middleware/auth.js";
 import authRoutes from "./routes/auth.js";
 import dotenv from "dotenv";
@@ -12,7 +17,15 @@ import cors from "cors"; // Import the cors package
 
 dotenv.config();
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.FRONTEND_URL  // Use environment variable in production
+    : 'http://localhost:5138',  // Development URL
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Add all needed HTTP methods
+  maxAge: 86400,
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 
 // Cookie parser middleware
 app.use(cookieParser());
@@ -39,7 +52,12 @@ app.use('/api/auth', authRoutes);
   }
 
   const server = createServer(app);
-  await registerRoutes(app);
+  // await registerRoutes(app);
+  await droneRoutes(app);
+  await dashboardRoutes(app);
+  await locationRoutes(app);
+  await missionRoutes(app);
+  await surveyRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
@@ -50,7 +68,6 @@ app.use('/api/auth', authRoutes);
   });
 
   console.log("Registering routes...");
-  // ALWAYS serve the app on port 3000
   const port = 3000;
   server.listen({
     port,

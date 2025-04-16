@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import bcrypt from 'bcryptjs';
 import { generateToken, setTokenCookie, clearTokenCookie, JwtPayload } from '../middleware/auth.ts';
-import { storage } from '../storage.js';
+import { storage } from '../database/storage.ts';
 import { insertUserSchema } from '../../shared/schema.ts';
 import { z } from 'zod';
 

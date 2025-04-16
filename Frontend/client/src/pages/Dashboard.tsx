@@ -2,6 +2,8 @@ import StatsSummary from "@/components/dashboard/StatsSummary";
 import MissionOverview from "@/components/dashboard/MissionOverview";
 import FleetStatus from "@/components/dashboard/FleetStatus";
 import RecentReports from "@/components/dashboard/RecentReports";
+import ChatBot from "@/components/chatbot/ChatBot";
+
 
 export default function Dashboard() {
   return (
@@ -17,6 +19,7 @@ export default function Dashboard() {
         <FleetStatus />
         <RecentReports />
       </div>
+      <ChatBot />
     </div>
   );
 }
